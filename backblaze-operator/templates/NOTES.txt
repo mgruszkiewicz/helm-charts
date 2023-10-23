@@ -1,0 +1,2 @@
+Backblaze-operator installed
+Visit https://github.com/ihyoudou/backblaze-operator/blob/main/README.md to learn how to create first bucket
