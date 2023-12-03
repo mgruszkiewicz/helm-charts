@@ -62,7 +62,7 @@ spec:
           value: {{ quote .Values.kubernetesClusterDomain }}
         envFrom:
         - secretRef:
-            name: {{ include "backblaze-operator.fullname" . }}-credentials
+            name: {{ include "backblaze-operator.secretName" . }}
         image: {{ .Values.controllerManager.manager.image.repository }}:{{ .Values.controllerManager.manager.image.tag
           | default .Chart.AppVersion }}
         livenessProbe:

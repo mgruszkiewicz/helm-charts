@@ -44,6 +44,9 @@ controllerManager:
   serviceAccount:
     annotations: {}
 credentials:
+  secret:
+    useSecret: false
+    name: ""
   b2ApplicationId: ""
   b2ApplicationKey: ""
   b2Region: ""
