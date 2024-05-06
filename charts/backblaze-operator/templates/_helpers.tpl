@@ -60,3 +60,11 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{- define "backblaze-operator.secretName" -}}
+{{- if .Values.credentials.secret.useSecret }}
+{{- .Values.credentials.secret.name }}
+{{- else }}
+{{- include "backblaze-operator.fullname" . }}-credentials
+{{- end }}
+{{- end }}
