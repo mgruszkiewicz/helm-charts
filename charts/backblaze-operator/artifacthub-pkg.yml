@@ -1,0 +1,106 @@
+# Artifact Hub package metadata file
+version: 0.3.2
+name: "backblaze-operator"
+category: "storage"
+displayName: "Backblaze B2 Operator"
+createdAt: "2025-03-16T12:45:44+00:00"
+description: "Backblaze B2 Operator for Kubernetes"
+homeURL: "https://github.com/mgruszkiewicz/backblaze-operator"
+operator: true
+keywords:
+  - storage operator
+  - backblaze b2 operator
+links:
+  - name: Operator Source
+    url: https://github.com/mgruszkiewicz/backblaze-operator
+  - name: Operator Helm Chart Source
+    url: https://github.com/mgruszkiewicz/helm-charts/tree/main/charts/backblaze-operator
+readme: |
+  # Backblaze Operator
+  Unofficial Backblaze B2 Operator for Kubernetes
+
+  ## Description
+  This project is a unofficial Backblaze B2 Operator for Kubernetes. It supports:
+  - Creating and deleting B2 bucket
+  - Set and update bucket ACL
+  - Setting lifecycle policy on bucket
+  - Creating and writing application keys to secret
+
+
+  ## Getting Started
+  You’ll need a Kubernetes cluster to run against and Backblaze account.
+
+  Create a key on Backblaze B2 to use for operator - you can create Master Application Key or regular Application Key (with permissions to create new keys).
+  * to create Master Application Key, go to Account -> Application Keys -> Generate New Master Application Key
+  * to create Application Key, you will need to use [b2 CLI tool](https://www.backblaze.com/docs/cloud-storage-command-line-tools) (and you will need to create master key anyway).
+  ```
+  $ b2 key create KEY-NAME writeKeys,deleteKeys,listBuckets,listAllBucketNames,readBuckets,writeBuckets,deleteBuckets
+  ```
+  The output will be space-seperated `application-id application-key`
+
+  ### Running on the cluster
+
+  **Using Helm**
+
+  To install a release named `b2operator` run:
+  ```bash
+  helm upgrade --install backblaze-operator backblaze-operator \
+    --set credentials.b2ApplicationId="your-application-id" \
+    --set credentials.b2ApplicationKey="your-application-key" \
+    --set credentials.b2Region="us-west-004" \
+    --namespace backblaze-operator --create-namespace \
+    --repo oci://ghcr.io/mgruszkiewicz/charts/backblaze-operator
+  ```
+  Replace `your-application-id`, `your-application-key` and `us-west-004` with details that match your account.
+  You can view all available values in [helm-charts repo](https://github.com/mgruszkiewicz/helm-charts/tree/main/charts/backblaze-operator).
+
+  ### Example CRD Usage: Creating a B2 bucket
+
+  Creating bucket with lifecycle policies on prefix `/` and `/logs`. Lifecycle policies are optional.
+
+  ```yaml
+  apiVersion: b2.issei.space/v1alpha2
+  kind: Bucket
+  metadata:
+    name: my-b2-bucket
+  spec:
+    atProvider:
+      acl: private
+      bucketLifecycle:
+        - fileNamePrefix: "/"
+          daysFromUploadingToHiding: 2
+          daysFromHidingToDeleting: 3
+        - fileNamePrefix: "logs"
+          daysFromUploadingToHiding: 5
+          daysFromHidingToDeleting: 7
+  ```
+
+  ### Example CRD Usage: Creating a application key
+
+  Creating keys with default permissions that will have access to bucket `my-b2-bucket` and will be saved to `new-key` secret in namespace `default`
+  ```yaml
+  apiVersion: b2.issei.space/v1alpha2
+  kind: Key
+  metadata:
+    name: my-b2-key
+  spec:
+    atProvider:
+      bucketName: my-b2-bucket
+      capabilities:
+        - deleteFiles
+        - listAllBucketNames
+        - listBuckets
+        - listFiles
+        - readBucketEncryption
+        - readBucketReplications
+        - readBuckets
+        - readFiles
+        - shareFiles
+        - writeBucketEncryption
+        - writeBucketReplications
+        - writeFiles
+    writeConnectionSecretToRef:
+        name: new-key
+        namespace: default
+  ```
+  The secret will contain `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `bucketName`, `endpoint`, `keyName`.
