@@ -30,5 +30,5 @@ roleRef:
   name: '{{ include "backblaze-operator.fullname" . }}-metrics-auth-role'
 subjects:
 - kind: ServiceAccount
-  name: '{{ include "backblaze-operator.fullname" . }}-controller-manager'
+  name: '{{ include "backblaze-operator.serviceAccountName" . }}'
   namespace: '{{ .Release.Namespace }}'

@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "backblaze-operator.fullname" . }}
+  name: {{ include "backblaze-operator.fullname" . }}-controller-manager
   labels:
     app.kubernetes.io/component: manager
     app.kubernetes.io/created-by: b2operator
@@ -31,7 +31,7 @@ spec:
           value: {{ quote .Values.kubernetesClusterDomain }}
         envFrom:
         - secretRef:
-            name: {{ include "backblaze-operator.secretName" . }}
+            name: {{ include "backblaze-operator.fullname" . }}-credentials
         image: {{ .Values.controllerManager.manager.image.repository }}:{{ .Values.controllerManager.manager.image.tag
           | default .Chart.AppVersion }}
         livenessProbe:
@@ -51,7 +51,11 @@ spec:
           }}
         securityContext: {{- toYaml .Values.controllerManager.manager.containerSecurityContext
           | nindent 10 }}
-      securityContext:
-        runAsNonRoot: true
-      serviceAccountName: {{ include "backblaze-operator.fullname" . }}-controller-manager
+      nodeSelector: {{- toYaml .Values.controllerManager.nodeSelector | nindent 8 }}
+      securityContext: {{- toYaml .Values.controllerManager.podSecurityContext | nindent
+        8 }}
+      serviceAccountName: {{ include "backblaze-operator.serviceAccountName" . }}
       terminationGracePeriodSeconds: 10
+      tolerations: {{- toYaml .Values.controllerManager.tolerations | nindent 8 }}
+      topologySpreadConstraints: {{- toYaml .Values.controllerManager.topologySpreadConstraints
+        | nindent 8 }}

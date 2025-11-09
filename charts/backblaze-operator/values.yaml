@@ -10,9 +10,8 @@ controllerManager:
         drop:
         - ALL
     image:
-      repository: ghcr.io/ihyoudou/backblaze-operator
+      repository: ghcr.io/mgruszkiewicz/backblaze-operator
       tag: latest
-    # -- Define resources requests and limits for backblaze-operator
     resources:
       limits:
         cpu: 500m
@@ -20,22 +19,15 @@ controllerManager:
       requests:
         cpu: 10m
         memory: 64Mi
+  nodeSelector: {}
+  podSecurityContext:
+    runAsNonRoot: true
   replicas: 1
-  serviceAccount:
-    annotations: {}
-# -- Credentials for Backblaze B2 Master Application Key
+  tolerations: []
+  topologySpreadConstraints: []
 credentials:
-  # -- Use Backblaze B2 credentials from existing secret
-  secret:
-    # -- Use existing secret instead of providing credentials in values (true/false)
-    useSecret: false
-    # -- Name of secret with B2 credentials
-    name: ""
-  # -- Backblaze B2 Master Application Key ID
   b2ApplicationId: ""
-  # -- Backblaze B2 Master Application Key Key
   b2ApplicationKey: ""
-  # -- Backblaze B2 Region of account
   b2Region: ""
 kubernetesClusterDomain: cluster.local
 metricsService:
@@ -45,3 +37,8 @@ metricsService:
     protocol: TCP
     targetPort: 8443
   type: ClusterIP
+serviceAccount:
+  annotations: {}
+  automount: true
+  create: true
+  name: ""

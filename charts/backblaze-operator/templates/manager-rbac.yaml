@@ -60,6 +60,13 @@ rules:
 - apiGroups:
   - ""
   resources:
+  - events
+  verbs:
+  - create
+  - patch
+- apiGroups:
+  - ""
+  resources:
   - secrets
   verbs:
   - create
@@ -85,5 +92,5 @@ roleRef:
   name: '{{ include "backblaze-operator.fullname" . }}-manager-role'
 subjects:
 - kind: ServiceAccount
-  name: '{{ include "backblaze-operator.fullname" . }}-controller-manager'
+  name: '{{ include "backblaze-operator.serviceAccountName" . }}'
   namespace: '{{ .Release.Namespace }}'
