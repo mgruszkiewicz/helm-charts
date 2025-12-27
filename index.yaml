@@ -3,6 +3,16 @@ entries:
   backblaze-operator:
   - apiVersion: v2
     appVersion: v1.3.0
+    created: "2025-12-27T16:08:55.451451572Z"
+    description: A Kubernetes Operator for Backblaze B2 object storage
+    digest: 4c77a38a8019e7a3ecdd1495b1ee6e28a439e37a77c367c47708b78d3a8bd83e
+    name: backblaze-operator
+    type: application
+    urls:
+    - https://github.com/mgruszkiewicz/helm-charts/releases/download/backblaze-operator-0.4.1/backblaze-operator-0.4.1.tgz
+    version: 0.4.1
+  - apiVersion: v2
+    appVersion: v1.3.0
     created: "2025-11-09T14:59:35.190116831Z"
     description: A Kubernetes Operator for Backblaze B2 object storage
     digest: f76c46ada9df4b29e595a2ab97f994a964d76382424fc3072148a0718f72818b
@@ -111,4 +121,4 @@ entries:
     urls:
     - https://github.com/ihyoudou/helm-charts/releases/download/backblaze-operator-0.1.0/backblaze-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2025-11-09T14:59:35.190162696Z"
+generated: "2025-12-27T16:08:55.451500918Z"
