@@ -1,3 +1,7 @@
+# -- Override the name of the chart
+nameOverride: ""
+# -- Override the full name of the release
+fullnameOverride: ""
 controllerManager:
   manager:
     args:
@@ -19,16 +23,26 @@ controllerManager:
       requests:
         cpu: 10m
         memory: 64Mi
+  # Node selector for pod assignment
   nodeSelector: {}
+  # Pod-level security context
   podSecurityContext:
     runAsNonRoot: true
   replicas: 1
   tolerations: []
   topologySpreadConstraints: []
 credentials:
+  # -- Backblaze B2 Application ID
   b2ApplicationId: ""
+  # -- Backblaze B2 Application Key
   b2ApplicationKey: ""
+  # -- Backblaze B2 Region
   b2Region: ""
+  secret:
+    # -- Use an existing secret instead of creating one
+    useSecret: false
+    # -- Name of the existing secret to use (required if useSecret is true)
+    name: ""
 kubernetesClusterDomain: cluster.local
 metricsService:
   ports:

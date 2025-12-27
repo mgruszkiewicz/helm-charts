@@ -1,6 +1,6 @@
 # backblaze-operator
 
-![Version: 0.4.0](https://img.shields.io/badge/Version-0.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.3.0](https://img.shields.io/badge/AppVersion-v1.3.0-informational?style=flat-square)
+![Version: 0.4.1](https://img.shields.io/badge/Version-0.4.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.3.0](https://img.shields.io/badge/AppVersion-v1.3.0-informational?style=flat-square)
 
 A Kubernetes Operator for Backblaze B2 object storage
 
@@ -24,15 +24,19 @@ A Kubernetes Operator for Backblaze B2 object storage
 | controllerManager.replicas | int | `1` |  |
 | controllerManager.tolerations | list | `[]` |  |
 | controllerManager.topologySpreadConstraints | list | `[]` |  |
-| credentials.b2ApplicationId | string | `""` |  |
-| credentials.b2ApplicationKey | string | `""` |  |
-| credentials.b2Region | string | `""` |  |
+| credentials.b2ApplicationId | string | `""` | Backblaze B2 Application ID |
+| credentials.b2ApplicationKey | string | `""` | Backblaze B2 Application Key |
+| credentials.b2Region | string | `""` | Backblaze B2 Region |
+| credentials.secret.name | string | `""` | Name of the existing secret to use (required if useSecret is true) |
+| credentials.secret.useSecret | bool | `false` | Use an existing secret instead of creating one |
+| fullnameOverride | string | `""` | Override the full name of the release |
 | kubernetesClusterDomain | string | `"cluster.local"` |  |
 | metricsService.ports[0].name | string | `"https"` |  |
 | metricsService.ports[0].port | int | `8443` |  |
 | metricsService.ports[0].protocol | string | `"TCP"` |  |
 | metricsService.ports[0].targetPort | int | `8443` |  |
 | metricsService.type | string | `"ClusterIP"` |  |
+| nameOverride | string | `""` | Override the name of the chart |
 | serviceAccount.annotations | object | `{}` |  |
 | serviceAccount.automount | bool | `true` |  |
 | serviceAccount.create | bool | `true` |  |
